@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -22,12 +24,17 @@ type WriteMsgEntry struct {
 }
 
 func ConnectToMongo() (*mongo.Client, context.Context) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file: ", err)
+	}
+
 	// Set up a context with a timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Define MongoDB connection options
-	clientOptions := options.Client().ApplyURI("mongodb+srv://elsifmaj:sekret@fso-part3.hjslzld.mongodb.net/?retryWrites=true&w=majority")
+	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_SIGNIN"))
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(ctx, clientOptions)
