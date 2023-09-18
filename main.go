@@ -57,6 +57,7 @@ func (s *Server) broadcast(b []byte) {
 		go func(ws *websocket.Conn) {
 			if _, err := ws.Write(b); err != nil {
 				fmt.Println("write error:", err)
+				ws.Close() // Trying this on for size.
 			}
 		}(ws)
 	}

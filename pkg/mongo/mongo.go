@@ -53,7 +53,6 @@ func WriteMsg(c *mongo.Collection, msg []byte) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	fmt.Println("did we get here?")
 	// Insert the document into the collection
 	_, err := c.InsertOne(ctx, document)
 	if err != nil {
@@ -65,8 +64,6 @@ func WriteMsg(c *mongo.Collection, msg []byte) error {
 }
 
 func ReadMsgs(c *mongo.Collection) []MsgEntry {
-	fmt.Println("here's the collection: ", c)
-
 	// Set up a context with a timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
